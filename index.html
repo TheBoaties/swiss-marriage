@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schweizer Steuerrechner für Ehepaare</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #e3000f;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .calculator {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .person-section {
+            border: 1px solid #eee;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #555;
+            font-size: 18px;
+        }
+        button {
+            background-color: #e3000f;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #c0000b;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 5px solid #e3000f;
+            display: none;
+        }
+        .recommendation {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #fffde7;
+            border-radius: 4px;
+        }
+        .tax-details {
+            margin-top: 15px;
+        }
+        .tax-comparison {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .tax-option {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            margin: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .canton-info {
+            font-style: italic;
+            color: #666;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .better-option {
+            border: 2px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Schweizer Steuerrechner für Ehepaare</h1>
+    
+    <div class="calculator">
+        <div class="person-section">
+            <h2>Person 1</h2>
+            <div class="form-group">
+                <label for="age1">Alter:</label>
+                <input type="number" id="age1" min="18" max="100" value="35">
+            </div>
+            <div class="form-group">
+                <label for="income1">Jahreseinkommen (CHF):</label>
+                <input type="number" id="income1" min="0" step="1000" value="80000">
+            </div>
+            <div class="form-group">
+                <label for="wealth1">Vermögen (CHF):</label>
+                <input type="number" id="wealth1" min="0" step="5000" value="100000">
+            </div>
+            <div class="form-group">
+                <label for="retirement-age1">Geplantes Rentenalter:</label>
+                <input type="number" id="retirement-age1" min="58" max="70" value="65">
+            </div>
+            <div class="form-group">
+                <label for="life-expectancy1">Geschätzte Lebenserwartung:</label>
+                <input type="number" id="life-expectancy1" min="60" max="120" value="85">
+            </div>
+        </div>
+        
+        <div class="person-section">
+            <h2>Person 2</h2>
+            <div class="form-group">
+                <label for="age2">Alter:</label>
+                <input type="number" id="age2" min="18" max="100" value="33">
+            </div>
+            <div class="form-group">
+                <label for="income2">Jahreseinkommen (CHF):</label>
+                <input type="number" id="income2" min="0" step="1000" value="70000">
+            </div>
+            <div class="form-group">
+                <label for="wealth2">Vermögen (CHF):</label>
+                <input type="number" id="wealth2" min="0" step="5000" value="80000">
+            </div>
+            <div class="form-group">
+                <label for="retirement-age2">Geplantes Rentenalter:</label>
+                <input type="number" id="retirement-age2" min="58" max="70" value="64">
+            </div>
+            <div class="form-group">
+                <label for="life-expectancy2">Geschätzte Lebenserwartung:</label>
+                <input type="number" id="life-expectancy2" min="60" max="120" value="88">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="canton">Kanton:</label>
+            <select id="canton">
+                <option value="ZH">Zürich</option>
+                <option value="BE">Bern</option>
+                <option value="LU">Luzern</option>
+                <option value="UR">Uri</option>
+                <option value="SZ">Schwyz</option>
+                <option value="OW">Obwalden</option>
+                <option value="NW">Nidwalden</option>
+                <option value="GL">Glarus</option>
+                <option value="ZG">Zug</option>
+                <option value="FR">Freiburg</option>
+                <option value="SO">Solothurn</option>
+                <option value="BS">Basel-Stadt</option>
+                <option value="BL">Basel-Landschaft</option>
+                <option value="SH">Schaffhausen</option>
+                <option value="AR">Appenzell Ausserrhoden</option>
+                <option value="AI">Appenzell Innerrhoden</option>
+                <option value="SG">St. Gallen</option>
+                <option value="GR">Graubünden</option>
+                <option value="AG">Aargau</option>
+                <option value="TG">Thurgau</option>
+                <option value="TI">Tessin</option>
+                <option value="VD">Waadt</option>
+                <option value="VS">Wallis</option>
+                <option value="NE">Neuenburg</option>
+                <option value="GE">Genf</option>
+                <option value="JU">Jura</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="children">Anzahl Kinder:</label>
+            <input type="number" id="children" min="0" max="10" value="0">
+        </div>
+        
+        <div class="form-group">
+            <label for="gemeente">Gemeinde:</label>
+            <select id="gemeente">
+                <option value="">Bitte wählen Sie zuerst einen Kanton</option>
+            </select>
+        </div>
+        
+        <button id="calculate-btn">Steuervergleich berechnen</button>
+    </div>
+    
+    <div class="results" id="results">
+        <h2>Steuervergleich</h2>
+        
+        <div class="tax-comparison">
+            <div class="tax-option" id="single-option">
+                <h3>Unverheiratet</h3>
+                <div class="tax-details">
+                    <p>Bundessteuer: <span id="single-federal-tax">0</span> CHF</p>
+                    <p>Kantonssteuer: <span id="single-cantonal-tax">0</span> CHF</p>
+                    <p>Gemeindesteuer: <span id="single-municipal-tax">0</span> CHF</p>
+                    <p>Vermögenssteuer: <span id="single-wealth-tax">0</span> CHF</p>
+                    <p><strong>Jährliche Gesamtsteuer: <span id="single-total-tax">0</span> CHF</strong></p>
+                </div>
+            </div>
+            
+            <div class="tax-option" id="married-option">
+                <h3>Verheiratet</h3>
+                <div class="tax-details">
+                    <p>Bundessteuer: <span id="married-federal-tax">0</span> CHF</p>
+                    <p>Kantonssteuer: <span id="married-cantonal-tax">0</span> CHF</p>
+                    <p>Gemeindesteuer: <span id="married-municipal-tax">0</span> CHF</p>
+                    <p>Vermögenssteuer: <span id="married-wealth-tax">0</span> CHF</p>
+                    <p><strong>Jährliche Gesamtsteuer: <span id="married-total-tax">0</span> CHF</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="recommendation" id="recommendation"></div>
+        
+        <div class="tax-details">
+            <h3>Steuerprognose über die Lebenszeit</h3>
+            <p>Geschätzte Steuereinsparung: <span id="lifetime-savings">0</span> CHF</p>
+            <p class="canton-info">Hinweis: Dies ist eine vereinfachte Schätzung basierend auf aktuellen Steuersätzen und geht von gleichbleibendem Einkommen bis zur Pensionierung aus.</p>
+        </div>
+        
+        <div class="tax-details">
+            <h3>Kinderabzüge</h3>
+            <p>Bundesabzug pro Kind: 6,500 CHF</p>
+            <p>Kantonaler Abzug pro Kind: <span id="cantonal-child-deduction">0</span> CHF</p>
+            <p>Gesamtabzüge für <span id="children-count">0</span> Kinder: <span id="total-child-deduction">0</span> CHF</p>
+        </div>
+    </div>
+    
+    <script>
+        // Gemeinde data for each canton
+        const gemeindeData = {
+            'ZH': ['Zürich', 'Winterthur', 'Uster', 'Dübendorf', 'Dietikon', 'Wetzikon', 'Wädenswil', 'Horgen', 'Kloten', 'Bülach'],
+            'BE': ['Bern', 'Biel/Bienne', 'Thun', 'Köniz', 'Burgdorf', 'Langenthal', 'Spiez', 'Worb', 'Muri bei Bern', 'Steffisburg'],
+            'LU': ['Luzern', 'Emmen', 'Kriens', 'Horw', 'Ebikon', 'Sursee', 'Hochdorf', 'Littau', 'Willisau', 'Rothenburg'],
+            'UR': ['Altdorf', 'Bürglen', 'Schattdorf', 'Erstfeld', 'Silenen', 'Seedorf', 'Flüelen', 'Andermatt', 'Attinghausen', 'Gurtnellen'],
+            'SZ': ['Schwyz', 'Freienbach', 'Einsiedeln', 'Küssnacht', 'Arth', 'Ingenbohl', 'Wangen', 'Lachen', 'Galgenen', 'Reichenburg'],
+            'OW': ['Sarnen', 'Kerns', 'Sachseln', 'Alpnach', 'Giswil', 'Engelberg', 'Lungern'],
+            'NW': ['Stans', 'Hergiswil', 'Buochs', 'Stansstad', 'Ennetbürgen', 'Wolfenschiessen', 'Beckenried', 'Oberdorf', 'Ennetmoos', 'Dallenwil'],
+            'GL': ['Glarus', 'Glarus Nord', 'Glarus Süd'],
+            'ZG': ['Zug', 'Baar', 'Cham', 'Hünenberg', 'Risch', 'Unterägeri', 'Oberägeri', 'Walchwil', 'Steinhausen', 'Menzingen', 'Neuheim'],
+            'FR': ['Freiburg', 'Bulle', 'Villars-sur-Glâne', 'Düdingen', 'Murten', 'Wünnewil-Flamatt', 'Marly', 'Estavayer-le-Lac', 'Tafers', 'Kerzers'],
+            'SO': ['Solothurn', 'Olten', 'Grenchen', 'Oensingen', 'Balsthal', 'Zuchwil', 'Dornach', 'Biberist', 'Trimbach', 'Breitenbach'],
+            'BS': ['Basel'],
+            'BL': ['Liestal', 'Allschwil', 'Reinach', 'Muttenz', 'Binningen', 'Pratteln', 'Münchenstein', 'Oberwil', 'Birsfelden', 'Sissach'],
+            'SH': ['Schaffhausen', 'Neuhausen am Rheinfall', 'Thayngen', 'Beringen', 'Stein am Rhein', 'Ramsen', 'Hallau'],
+            'AR': ['Herisau', 'Heiden', 'Teufen', 'Speicher', 'Walzenhausen', 'Wolfhalden', 'Schwellbrunn', 'Urnäsch', 'Gais', 'Rehetobel'],
+            'AI': ['Appenzell', 'Schwende', 'Rüte', 'Schlatt-Haslen', 'Gonten', 'Oberegg'],
+            'SG': ['St. Gallen', 'Rapperswil-Jona', 'Wil', 'Gossau', 'Uzwil', 'Buchs', 'Altstätten', 'Flawil', 'Rorschach', 'Sargans'],
+            'GR': ['Chur', 'Davos', 'St. Moritz', 'Arosa', 'Ilanz', 'Klosters', 'Landquart', 'Pontresina', 'Poschiavo', 'Samnaun'],
+            'AG': ['Aarau', 'Baden', 'Wettingen', 'Wohlen', 'Zofingen', 'Lenzburg', 'Brugg', 'Rheinfelden', 'Spreitenbach', 'Oftringen'],
+            'TG': ['Frauenfeld', 'Kreuzlingen', 'Arbon', 'Amriswil', 'Weinfelden', 'Romanshorn', 'Bischofszell', 'Sirnach', 'Aadorf', 'Münchwilen'],
+            'TI': ['Lugano', 'Bellinzona', 'Locarno', 'Mendrisio', 'Chiasso', 'Giubiasco', 'Minusio', 'Biasca', 'Losone', 'Massagno'],
+            'VD': ['Lausanne', 'Yverdon-les-Bains', 'Montreux', 'Renens', 'Nyon', 'Vevey', 'Morges', 'Pully', 'Lutry', 'Aigle'],
+            'VS': ['Sion', 'Martigny', 'Monthey', 'Sierre', 'Brig-Glis', 'Visp', 'Naters', 'Crans-Montana', 'Fully', 'Zermatt'],
+            'NE': ['Neuchâtel', 'La Chaux-de-Fonds', 'Le Locle', 'Val-de-Travers', 'Val-de-Ruz', 'Boudry', 'Colombier', 'Corcelles-Cormondrèche', 'Cortaillod', 'Peseux'],
+            'GE': ['Genf', 'Vernier', 'Lancy', 'Meyrin', 'Carouge', 'Onex', 'Thônex', 'Versoix', 'Grand-Saconnex', 'Chêne-Bougeries'],
+            'JU': ['Delsberg', 'Pruntrut', 'Laufen', 'Saignelégier', 'Le Noirmont', 'Courgenay', 'Porrentruy', 'Bassecourt', 'Alle', 'Courrendlin']
+        };
+        
+        // Populate Gemeinde dropdown when canton changes
+        document.getElementById('canton').addEventListener('change', function() {
+            const selectedCanton = this.value;
+            const gemeindeSelect = document.getElementById('gemeente');
+            
+            // Clear current options
+            gemeindeSelect.innerHTML = '';
+            
+            // Add new options based on selected canton
+            if (gemeindeData[selectedCanton]) {
+                gemeindeData[selectedCanton].forEach(function(gemeinde) {
+                    const option = document.createElement('option');
+                    option.value = gemeinde;
+                    option.textContent = gemeinde;
+                    gemeindeSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Cantonal child deductions for each canton
+        const cantonalChildDeductions = {
+            'ZH': 9000,
+            'BE': 8000,
+            'LU': 6500,
+            'UR': 8000,
+            'SZ': 9000,
+            'OW': 6000,
+            'NW': 7000,
+            'GL': 7000,
+            'ZG': 12000,
+            'FR': 8500,
+            'SO': 6000,
+            'BS': 7800,
+            'BL': 7500,
+            'SH': 8400,
+            'AR': 6000,
+            'AI': 6000,
+            'SG': 7500,
+            'GR': 9300,
+            'AG': 6000,
+            'TG': 7000,
+            'TI': 11100,
+            'VD': 9000,
+            'VS': 7510,
+            'NE': 6200,
+            'GE': 10000,
+            'JU': 5300
+        };
+        
+        document.getElementById('calculate-btn').addEventListener('click', function() {
+            calculateTax();
+        });
+        
+        function calculateTax() {
+            // Get input values
+            const age1 = parseInt(document.getElementById('age1').value);
+            const income1 = parseInt(document.getElementById('income1').value);
+            const wealth1 = parseInt(document.getElementById('wealth1').value);
+            const retirementAge1 = parseInt(document.getElementById('retirement-age1').value);
+            const lifeExpectancy1 = parseInt(document.getElementById('life-expectancy1').value);
+            
+            const age2 = parseInt(document.getElementById('age2').value);
+            const income2 = parseInt(document.getElementById('income2').value);
+            const wealth2 = parseInt(document.getElementById('wealth2').value);
+            const retirementAge2 = parseInt(document.getElementById('retirement-age2').value);
+            const lifeExpectancy2 = parseInt(document.getElementById('life-expectancy2').value);
+            
+            const canton = document.getElementById('canton').value;
+            const gemeente = document.getElementById('gemeente').value;
+            const children = parseInt(document.getElementById('children').value);
+            
+            // Calculate taxes for single status (separate)
+            // For single status, we typically divide the children between the partners
+            // Most commonly, the higher earner claims more children for tax purposes
+            let children1 = 0;
+            let children2 = 0;
+            
+            if (children > 0) {
+                // Allocate children optimally for tax purposes (typically to higher earner)
+                if (income1 >= income2) {
+                    children1 = children;
+                    children2 = 0;
+                } else {
+                    children1 = 0;
+                    children2 = children;
+                }
+            }
+            
+            const federalTaxSingle1 = calculateFederalTaxSingle(income1, children1);
+            const federalTaxSingle2 = calculateFederalTaxSingle(income2, children2);
+            const combinedFederalTaxSingle = federalTaxSingle1 + federalTaxSingle2;
+            
+            const cantonalTaxSingle1 = calculateCantonalTax(income1, canton, false, children1);
+            const cantonalTaxSingle2 = calculateCantonalTax(income2, canton, false, children2);
+            const combinedCantonalTaxSingle = cantonalTaxSingle1 + cantonalTaxSingle2;
+            
+            const municipalTaxSingle1 = calculateMunicipalTax(cantonalTaxSingle1, canton, gemeente);
+            const municipalTaxSingle2 = calculateMunicipalTax(cantonalTaxSingle2, canton, gemeente);
+            const combinedMunicipalTaxSingle = municipalTaxSingle1 + municipalTaxSingle2;
+            
+            const wealthTaxSingle1 = calculateWealthTax(wealth1, canton, false);
+            const wealthTaxSingle2 = calculateWealthTax(wealth2, canton, false);
+            const combinedWealthTaxSingle = wealthTaxSingle1 + wealthTaxSingle2;
+            
+            const totalTaxSingle = combinedFederalTaxSingle + combinedCantonalTaxSingle + 
+                                   combinedMunicipalTaxSingle + combinedWealthTaxSingle;
+            
+            // Calculate taxes for married status (joint)
+            const combinedIncome = income1 + income2;
+            const combinedWealth = wealth1 + wealth2;
+            
+            const federalTaxMarried = calculateFederalTaxMarried(combinedIncome, children);
+            const cantonalTaxMarried = calculateCantonalTax(combinedIncome, canton, true, children);
+            const municipalTaxMarried = calculateMunicipalTax(cantonalTaxMarried, canton, gemeente);
+            const wealthTaxMarried = calculateWealthTax(combinedWealth, canton, true);
+            
+            const totalTaxMarried = federalTaxMarried + cantonalTaxMarried + 
+                                   municipalTaxMarried + wealthTaxMarried;
+            
+            // Lifetime tax projection
+            const yearsUntilRetirement1 = retirementAge1 - age1;
+            const yearsUntilRetirement2 = retirementAge2 - age2;
+            
+            const avgWorkingYears = Math.max(yearsUntilRetirement1, yearsUntilRetirement2);
+            const taxDifferencePerYear = totalTaxSingle - totalTaxMarried;
+            const lifetimeSavings = taxDifferencePerYear * avgWorkingYears;
+            
+            // Update results in the UI
+            document.getElementById('single-federal-tax').textContent = formatMoney(combinedFederalTaxSingle);
+            document.getElementById('single-cantonal-tax').textContent = formatMoney(combinedCantonalTaxSingle);
+            document.getElementById('single-municipal-tax').textContent = formatMoney(combinedMunicipalTaxSingle);
+            document.getElementById('single-wealth-tax').textContent = formatMoney(combinedWealthTaxSingle);
+            document.getElementById('single-total-tax').textContent = formatMoney(totalTaxSingle);
+            
+            document.getElementById('married-federal-tax').textContent = formatMoney(federalTaxMarried);
+            document.getElementById('married-cantonal-tax').textContent = formatMoney(cantonalTaxMarried);
+            document.getElementById('married-municipal-tax').textContent = formatMoney(municipalTaxMarried);
+            document.getElementById('married-wealth-tax').textContent = formatMoney(wealthTaxMarried);
+            document.getElementById('married-total-tax').textContent = formatMoney(totalTaxMarried);
+            
+            document.getElementById('lifetime-savings').textContent = formatMoney(Math.abs(lifetimeSavings));
+            
+            // Update child deduction information
+            const cantonalChildDeduction = cantonalChildDeductions[canton];
+            document.getElementById('cantonal-child-deduction').textContent = formatMoney(cantonalChildDeduction);
+            document.getElementById('children-count').textContent = children;
+            document.getElementById('total-child-deduction').textContent = formatMoney((6500 + cantonalChildDeduction) * children);
+            
+            // Set recommendation
+            let recommendation = '';
+            if (totalTaxMarried < totalTaxSingle) {
+                recommendation = "Basierend auf Ihren Eingaben würden Sie durch Heirat ungefähr " + 
+                                formatMoney(totalTaxSingle - totalTaxMarried) + 
+                                " CHF an jährlichen Steuern sparen.";
+                document.getElementById('married-option').classList.add('better-option');
+                document.getElementById('single-option').classList.remove('better-option');
+            } else if (totalTaxSingle < totalTaxMarried) {
+                recommendation = "Basierend auf Ihren Eingaben würden Sie als unverheiratetes Paar ungefähr " + 
+                                formatMoney(totalTaxMarried - totalTaxSingle) + 
+                                " CHF an jährlichen Steuern sparen.";
+                document.getElementById('single-option').classList.add('better-option');
+                document.getElementById('married-option').classList.remove('better-option');
+            } else {
+                recommendation = "Es scheint keinen signifikanten steuerlichen Unterschied zwischen verheiratetem und unverheiratetem Status zu geben basierend auf Ihren Eingaben.";
+                document.getElementById('single-option').classList.remove('better-option');
+                document.getElementById('married-option').classList.remove('better-option');
+            }
+            document.getElementById('recommendation').textContent = recommendation;
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+        }
+        
+        function calculateFederalTaxSingle(income, children = 0) {
+            // Apply child deductions to income before tax calculation
+            const childDeduction = 6500; // Federal deduction per child
+            const deductedIncome = Math.max(0, income - (children * childDeduction));
+            
+            // Simplified progressive tax calculation for single individuals
+            if (deductedIncome <= 14500) return 0;
+            if (deductedIncome <= 31600) return (deductedIncome - 14500) * 0.0077;
+            if (deductedIncome <= 41400) return 131.65 + (deductedIncome - 31600) * 0.0088;
+            if (deductedIncome <= 55200) return 217.90 + (deductedIncome - 41400) * 0.0264;
+            if (deductedIncome <= 72500) return 582.20 + (deductedIncome - 55200) * 0.0297;
+            if (deductedIncome <= 78100) return 1096.00 + (deductedIncome - 72500) * 0.0606;
+            if (deductedIncome <= 103600) return 1428.60 + (deductedIncome - 78100) * 0.0879;
+            if (deductedIncome <= 134600) return 3667.00 + (deductedIncome - 103600) * 0.1154;
+            if (deductedIncome <= 176000) return 7225.00 + (deductedIncome - 134600) * 0.1242;
+            if (deductedIncome <= 755200) return 12350.00 + (deductedIncome - 176000) * 0.1330;
+            return 88994.00 + (deductedIncome - 755200) * 0.1140;
+        }
+        
+        function calculateFederalTaxMarried(income, children = 0) {
+            // Apply child deductions to income before tax calculation
+            const childDeduction = 6500; // Federal deduction per child
+            const deductedIncome = Math.max(0, income - (children * childDeduction));
+            
+            // Simplified progressive tax calculation for married couples
+            if (deductedIncome <= 28300) return 0;
+            if (deductedIncome <= 50900) return (deductedIncome - 28300) * 0.0077;
+            if (deductedIncome <= 58400) return 173.80 + (deductedIncome - 50900) * 0.0088;
+            if (deductedIncome <= 75300) return 239.00 + (deductedIncome - 58400) * 0.0264;
+            if (deductedIncome <= 90300) return 684.80 + (deductedIncome - 75300) * 0.0297;
+            if (deductedIncome <= 103400) return 1129.40 + (deductedIncome - 90300) * 0.0330;
+            if (deductedIncome <= 114700) return 1557.70 + (deductedIncome - 103400) * 0.0660;
+            if (deductedIncome <= 137300) return 2307.00 + (deductedIncome - 114700) * 0.0880;
+            if (deductedIncome <= 180000) return 4307.00 + (deductedIncome - 137300) * 0.1100;
+            if (deductedIncome <= 755200) return 9030.00 + (deductedIncome - 180000) * 0.1325;
+            return 84560.00 + (deductedIncome - 755200) * 0.1140;
+            
+            // Note: Married couples with children also benefit from family quotient in some cantons
+        }
+        
+        function calculateCantonalTax(income, canton, isMarried, children = 0) {
+            // Apply cantonal child deductions to income before tax calculation
+            const cantonalChildDeductions = {
+                'ZH': 9000,
+                'BE': 8000,
+                'LU': 6500,
+                'UR': 8000,
+                'SZ': 9000,
+                'OW': 6000,
+                'NW': 7000,
+                'GL': 7000,
+                'ZG': 12000,
+                'FR': 8500,
+                'SO': 6000,
+                'BS': 7800,
+                'BL': 7500,
+                'SH': 8400,
+                'AR': 6000,
+                'AI': 6000,
+                'SG': 7500,
+                'GR': 9300,
+                'AG': 6000,
+                'TG': 7000,
+                'TI': 11100,
+                'VD': 9000,
+                'VS': 7510,
+                'NE': 6200,
+                'GE': 10000,
+                'JU': 5300
+            };
+            
+            const deductedIncome = Math.max(0, income - (children * cantonalChildDeductions[canton]));
+            
+            // Simplified cantonal tax estimation based on typical rates
+            // In reality, each canton has its own complex progressive tax system
+            const cantonRates = {
+                'ZH': isMarried ? 0.09 : 0.10,
+                'BE': isMarried ? 0.095 : 0.105,
+                'LU': isMarried ? 0.085 : 0.095,
+                'UR': isMarried ? 0.075 : 0.085,
+                'SZ': isMarried ? 0.065 : 0.075,
+                'OW': isMarried ? 0.07 : 0.08,
+                'NW': isMarried ? 0.065 : 0.075,
+                'GL': isMarried ? 0.08 : 0.09,
+                'ZG': isMarried ? 0.055 : 0.065,
+                'FR': isMarried ? 0.09 : 0.10,
+                'SO': isMarried ? 0.095 : 0.105,
+                'BS': isMarried ? 0.11 : 0.12,
+                'BL': isMarried ? 0.095 : 0.105,
+                'SH': isMarried ? 0.09 : 0.10,
+                'AR': isMarried ? 0.08 : 0.09,
+                'AI': isMarried ? 0.07 : 0.08,
+                'SG': isMarried ? 0.085 : 0.095,
+                'GR': isMarried ? 0.08 : 0.09,
+                'AG': isMarried ? 0.09 : 0.10,
+                'TG': isMarried ? 0.085 : 0.095,
+                'TI': isMarried ? 0.095 : 0.105,
+                'VD': isMarried ? 0.105 : 0.115,
+                'VS': isMarried ? 0.095 : 0.105,
+                'NE': isMarried ? 0.11 : 0.12,
+                'GE': isMarried ? 0.11 : 0.12,
+                'JU': isMarried ? 0.10 : 0.11
+            };
+            
+            // Apply marriage splitting in cantons that use it
+            let taxableIncome = income;
+            if (isMarried) {
+                // Some cantons apply income splitting for married couples
+                // Typical splitting factors range from 1.5 to 2.0
+                if (['ZH', 'BE', 'LU', 'UR', 'SZ', 'NW', 'GL', 'ZG', 'FR', 'SO', 'BL', 'SH', 'AR', 'AI', 'SG', 'GR', 'TG', 'TI', 'VS', 'NE', 'JU'].includes(canton)) {
+                    // Family quotient - different splitting factor based on number of children in some cantons
+                    let splittingFactor = 1.9;
+                    
+                    // Some cantons increase splitting factor with children
+                    if (children > 0) {
+                        if (['VD', 'FR', 'NE'].includes(canton)) {
+                            // These cantons use family quotient system
+                            splittingFactor += children * 0.1; // Each child increases divisor
+                        }
+                    }
+                    
+                    taxableIncome = deductedIncome / splittingFactor; // Apply splitting factor
+                    // Apply tax rate to the split income and then multiply by splitting factor
+                    return (taxableIncome * cantonRates[canton]) * splittingFactor;
+                }
+            }
+            
+            return deductedIncome * cantonRates[canton];
+        }
+        
+        function calculateMunicipalTax(cantonalTax, canton, gemeente) {
+            // Municipal tax is often calculated as a percentage of cantonal tax
+            // This is a simplified approximation
+            const municipalMultipliers = {
+                'ZH': 1.1,
+                'BE': 1.5,
+                'LU': 1.8,
+                'UR': 1.0,
+                'SZ': 0.9,
+                'OW': 1.0,
+                'NW': 0.8,
+                'GL': 0.5,
+                'ZG': 0.6,
+                'FR': 0.75,
+                'SO': 1.8,
+                'BS': 0.5,
+                'BL': 0.5,
+                'SH': 1.0,
+                'AR': 0.95,
+                'AI': 0.8,
+                'SG': 1.2,
+                'GR': 1.0,
+                'AG': 1.1,
+                'TG': 1.5,
+                'TI': 0.9,
+                'VD': 0.7,
+                'VS': 1.2,
+                'NE': 0.7,
+                'GE': 0.45,
+                'JU': 1.9
+            };
+            
+            return cantonalTax * municipalMultipliers[canton];
+        }
+        
+        function calculateWealthTax(wealth, canton, isMarried) {
+            // Simplified wealth tax calculation
+            // Wealth tax in Switzerland is primarily cantonal, not federal
+            const exemptionAmount = isMarried ? 150000 : 75000; // Typical exemption
+            const taxableWealth = Math.max(0, wealth - exemptionAmount);
+            
+            const wealthTaxRates = {
+                'ZH': 0.0030,
+                'BE': 0.0035,
+                'LU': 0.0025,
+                'UR': 0.0020,
+                'SZ': 0.0015,
+                'OW': 0.0020,
+                'NW': 0.0015,
+                'GL': 0.0020,
+                'ZG': 0.0015,
+                'FR': 0.0030,
+                'SO': 0.0030,
+                'BS': 0.0050,
+                'BL': 0.0035,
+                'SH': 0.0030,
+                'AR': 0.0025,
+                'AI': 0.0020,
+                'SG': 0.0025,
+                'GR': 0.0025,
+                'AG': 0.0030,
+                'TG': 0.0030,
+                'TI': 0.0035,
+                'VD': 0.0035,
+                'VS': 0.0030,
+                'NE': 0.0040,
+                'GE': 0.0045,
+                'JU': 0.0035
+            };
+            
+            return taxableWealth * wealthTaxRates[canton];
+        }
+        
+        function formatMoney(amount) {
+            return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+    </script>
+</body>
+</html>
