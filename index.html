@@ -9,7 +9,7 @@
             font-family: 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
@@ -24,6 +24,19 @@
             border-radius: 8px;
             padding: 25px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .person-section {
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
         }
         .form-group {
             margin-bottom: 20px;
@@ -40,11 +53,22 @@
             border-radius: 4px;
             font-size: 16px;
         }
-        .person-section {
-            border: 1px solid #eee;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
+        .common-fields {
+            display: block;
+            width: 100%;
+            padding: 20px 0;
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
+        }
+        .common-fields .form-group {
+            width: 30%;
+            display: inline-block;
+            margin-right: 2%;
+            vertical-align: top;
+        }
+        .common-fields .form-group:last-child {
+            width: 100%;
+            margin-top: 20px;
         }
         h2 {
             margin-top: 0;
@@ -128,51 +152,53 @@
     <h1>Schweizer Steuerrechner für Ehepaare</h1>
     
     <div class="calculator">
-        <div class="person-section">
-            <h2>Person 1</h2>
-            <div class="form-group">
-                <label for="age1">Alter:</label>
-                <input type="number" id="age1" min="18" max="100" value="35">
+        <div class="form-section">
+            <div class="person-section">
+                <h2>Person 1</h2>
+                <div class="form-group">
+                    <label for="age1">Alter:</label>
+                    <input type="number" id="age1" min="18" max="100" value="35">
+                </div>
+                <div class="form-group">
+                    <label for="income1">Jahreseinkommen (CHF):</label>
+                    <input type="number" id="income1" min="0" step="1000" value="80000">
+                </div>
+                <div class="form-group">
+                    <label for="wealth1">Vermögen (CHF):</label>
+                    <input type="number" id="wealth1" min="0" step="5000" value="100000">
+                </div>
+                <div class="form-group">
+                    <label for="retirement-age1">Geplantes Rentenalter:</label>
+                    <input type="number" id="retirement-age1" min="58" max="70" value="65">
+                </div>
+                <div class="form-group">
+                    <label for="life-expectancy1">Geschätzte Lebenserwartung:</label>
+                    <input type="number" id="life-expectancy1" min="60" max="120" value="85">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="income1">Jahreseinkommen (CHF):</label>
-                <input type="number" id="income1" min="0" step="1000" value="80000">
-            </div>
-            <div class="form-group">
-                <label for="wealth1">Vermögen (CHF):</label>
-                <input type="number" id="wealth1" min="0" step="5000" value="100000">
-            </div>
-            <div class="form-group">
-                <label for="retirement-age1">Geplantes Rentenalter:</label>
-                <input type="number" id="retirement-age1" min="58" max="70" value="65">
-            </div>
-            <div class="form-group">
-                <label for="life-expectancy1">Geschätzte Lebenserwartung:</label>
-                <input type="number" id="life-expectancy1" min="60" max="120" value="85">
-            </div>
-        </div>
-        
-        <div class="person-section">
-            <h2>Person 2</h2>
-            <div class="form-group">
-                <label for="age2">Alter:</label>
-                <input type="number" id="age2" min="18" max="100" value="33">
-            </div>
-            <div class="form-group">
-                <label for="income2">Jahreseinkommen (CHF):</label>
-                <input type="number" id="income2" min="0" step="1000" value="70000">
-            </div>
-            <div class="form-group">
-                <label for="wealth2">Vermögen (CHF):</label>
-                <input type="number" id="wealth2" min="0" step="5000" value="80000">
-            </div>
-            <div class="form-group">
-                <label for="retirement-age2">Geplantes Rentenalter:</label>
-                <input type="number" id="retirement-age2" min="58" max="70" value="64">
-            </div>
-            <div class="form-group">
-                <label for="life-expectancy2">Geschätzte Lebenserwartung:</label>
-                <input type="number" id="life-expectancy2" min="60" max="120" value="88">
+            
+            <div class="person-section">
+                <h2>Person 2</h2>
+                <div class="form-group">
+                    <label for="age2">Alter:</label>
+                    <input type="number" id="age2" min="18" max="100" value="33">
+                </div>
+                <div class="form-group">
+                    <label for="income2">Jahreseinkommen (CHF):</label>
+                    <input type="number" id="income2" min="0" step="1000" value="70000">
+                </div>
+                <div class="form-group">
+                    <label for="wealth2">Vermögen (CHF):</label>
+                    <input type="number" id="wealth2" min="0" step="5000" value="80000">
+                </div>
+                <div class="form-group">
+                    <label for="retirement-age2">Geplantes Rentenalter:</label>
+                    <input type="number" id="retirement-age2" min="58" max="70" value="64">
+                </div>
+                <div class="form-group">
+                    <label for="life-expectancy2">Geschätzte Lebenserwartung:</label>
+                    <input type="number" id="life-expectancy2" min="60" max="120" value="88">
+                </div>
             </div>
         </div>
         
@@ -602,8 +628,10 @@
         
         function calculateMunicipalTax(cantonalTax, canton, gemeente) {
             // Municipal tax is often calculated as a percentage of cantonal tax
-            // This is a simplified approximation
-            const municipalMultipliers = {
+            // These multipliers vary significantly by municipality
+            
+            // Define base multipliers by canton
+            const baseMultipliers = {
                 'ZH': 1.1,
                 'BE': 1.5,
                 'LU': 1.8,
@@ -632,7 +660,55 @@
                 'JU': 1.9
             };
             
-            return cantonalTax * municipalMultipliers[canton];
+            // Define municipality-specific multipliers (some examples)
+            const municipalMultipliers = {
+                'ZH': {
+                    'Zürich': 1.19,
+                    'Winterthur': 1.22,
+                    'Uster': 1.10,
+                    'Dübendorf': 0.97,
+                    'Dietikon': 1.23
+                },
+                'BE': {
+                    'Bern': 1.54,
+                    'Biel/Bienne': 1.63,
+                    'Thun': 1.57,
+                    'Köniz': 1.49,
+                    'Burgdorf': 1.63
+                },
+                'LU': {
+                    'Luzern': 1.85,
+                    'Emmen': 2.0,
+                    'Kriens': 1.9,
+                    'Horw': 1.5,
+                    'Ebikon': 1.9
+                },
+                'ZG': {
+                    'Zug': 0.60,
+                    'Baar': 0.56,
+                    'Cham': 0.65,
+                    'Hünenberg': 0.62,
+                    'Risch': 0.58
+                },
+                'BS': {
+                    'Basel': 0.5
+                },
+                'GE': {
+                    'Genf': 0.45,
+                    'Vernier': 0.50,
+                    'Lancy': 0.47,
+                    'Meyrin': 0.44,
+                    'Carouge': 0.47
+                }
+            };
+            
+            // Use specific multiplier if available, otherwise use base multiplier
+            let multiplier = baseMultipliers[canton];
+            if (municipalMultipliers[canton] && municipalMultipliers[canton][gemeente]) {
+                multiplier = municipalMultipliers[canton][gemeente];
+            }
+            
+            return cantonalTax * multiplier;
         }
         
         function calculateWealthTax(wealth, canton, isMarried) {
